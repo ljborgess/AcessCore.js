@@ -38,3 +38,5 @@ console.log('\n✓ Dados foram salvos em database.json!');
 console.log('removendo cadastro...');
 servico.removerCadastro(pessoa1.id);
 console.log('✓ Cadastro removido');
+console.log('\nCadastros em memória após remoção:');
+console.log(JSON.stringify(servico.listaCadastros, null, 2));
