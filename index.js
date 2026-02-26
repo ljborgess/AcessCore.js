@@ -1,42 +1,42 @@
-const services = require('./service/Services.js');
-const cadastro = require('./service/Cadastros.js');
+import Admin from "./src/models/admin.js"
+import Rh from "./src/models/Rh.js"
+import { User } from "./src/models/User.js"
+import { usuarios } from "./data/database.js"
 
-// Cria uma instância do serviço
-const servico = new services();
+console.log("🚀 Iniciando sistema...\n")
 
-// Cria alguns cadastros para teste
-const pessoa1 = {
-    nome: 'João Silva',
-    idade: 25,
-    dataNascimento: '1999-05-10',
-    id: Date.now(),
-    status: 'ativo'
-};
+try {
+  // Criando usuários
+  const admin = new Admin("Luciano", "admin@email.com", "123456")
+  const rh = new Rh("Maria", "rh@email.com", "123456")
+  const user1 = new User("João", "joao@email.com", "123456", "USER")
 
-const pessoa2 = {
-    nome: 'Maria Santos',
-    idade: 30,
-    dataNascimento: '1994-03-20',
-    id: Date.now() + 1,
-    status: 'ativo'
-};
+  console.log("✅ Usuários criados com sucesso!\n")
 
-// Adiciona os cadastros
-console.log('Adicionando cadastros...');
-servico.adicionarCadastro(pessoa1);
-console.log('✓ Cadastro 1 adicionado');
+  // Testando email duplicado
+  try {
+    const userDuplicado = new User("Carlos", "joao@email.com", "123456", "USER")
+  } catch (error) {
+    console.log("❌ Erro ao criar usuário:", error.message)
+  }
 
-servico.adicionarCadastro(pessoa2);
-console.log('✓ Cadastro 2 adicionado');
+  console.log("\n📋 Lista de usuários:")
+  usuarios.forEach(u => {
+    console.log(u.exibirInfos())
+  })
 
-// Mostra os cadastros em memória
-console.log('\nCadastros em memória:');
-console.log(JSON.stringify(servico.listaCadastros, null, 2));
+  // Admin desativando usuário
+  console.log("\n🛑 Admin desativando João...")
+  admin.deletarUsuario(user1)
 
-console.log('\n✓ Dados foram salvos em database.json!');
+  console.log(user1.exibirInfos())
 
-console.log('removendo cadastro...');
-servico.removerCadastro(pessoa1.id);
-console.log('✓ Cadastro removido');
-console.log('\nCadastros em memória após remoção:');
-console.log(JSON.stringify(servico.listaCadastros, null, 2));
+  // RH reativando
+  console.log("\n👔 RH reativando João...")
+  rh.contratarUsuario(user1)
+
+  console.log(user1.exibirInfos())
+
+} catch (error) {
+  console.log("Erro geral:", error.message)
+}
