@@ -21,9 +21,21 @@ try {
   }
 
   console.log("\n📋 Lista de usuários:")
-  usuarios.forEach(u => {
-    console.log(u.exibirInfos())
-  })
+  admin.listarUsuarios()
+
+  // aplicar warning em João
+  console.log("\n⚠️ Aplicando warning em João...")
+  admin.aplicarWarning(user1.email, 1)
+  console.log('Warnings de João:', user1.warnings)
+
+  // bloquear e desbloquear
+  console.log("\n🚫 Bloqueando João...")
+  admin.bloquearUsuario(user1.email)
+  console.log('isBlocked de João:', user1.isBlocked)
+
+  console.log("\n✅ Desbloqueando João...")
+  admin.desbloquearUsuario(user1.email)
+  console.log('isBlocked de João:', user1.isBlocked)
 
   // Admin desativando usuário
   console.log("\n🛑 Admin desativando João...")

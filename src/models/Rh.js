@@ -9,4 +9,11 @@ export default class Rh extends User {
         usuario.ativo = true
         console.log("Usuário reativado pelo RH")
     }
+    listarUsuario(usuarios){
+        usuarios.forEach(u => {
+            console.log(u.exibirInfos())
+    })
+    }
+    
+    
 }

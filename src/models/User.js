@@ -1,23 +1,33 @@
 import { usuarios } from "../../data/database.js"
 
 export class User {
-    constructor(nome,email,senha,role = 'USER',ativo = true){
+    constructor(nome,email,senha,role = 'USER',ativo = true,isBlocked = false){
         // duplicate email guard
         if(usuarios.find(u => u.email === email)){
             throw new Error('Email já cadastrado')
-        }
 
+    }
+    if(usuarios.find(u => u.nome === nome)){
+            throw new Error('Email já cadastrado')
+            
+    }     
+    
         this.validarNome(nome)
         this.validarEmail(email)
         this.validarSenha(senha)
         this.validarRole(role)
         this.validarAtivo(ativo)
+        this.validarBloqueio(isBlocked)
         
         this.nome = nome
         this.email = email
         this.senha = senha 
         this.role = role 
         this.ativo = ativo 
+        // normalize isBlocked to boolean
+        this.isBlocked = (isBlocked === true || isBlocked === 'true') ? true : false
+        // warning counter
+        this.warnings = 0
 
         // register user
         usuarios.push(this)
@@ -49,6 +59,12 @@ export class User {
         }
     }
 
+    validarBloqueio(isBlocked){
+        if(isBlocked !== true && isBlocked !== false && isBlocked !== 'true' && isBlocked !== 'false'){
+            throw new Error('Formato de bloqueio inválido')
+        }
+    }
+
     desativar(){
         this.ativo = false
     }
@@ -58,7 +74,11 @@ export class User {
         ${this.senha},
         ${this.email},
         ${this.role},
-        ${this.ativo}`
+        ${this.ativo},
+        warnings:${this.warnings}`
     }
+        }
 
-}
+    
+
+
